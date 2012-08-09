@@ -1,0 +1,113 @@
+// symbols.txt
+// List of HTML symbols.
+
+&#8413;  // white large circle
+&#9675;  // white small circle
+&#9676;  // white small dotted circle
+&#9677;  // circle vertical fill
+&#9679;  // black small circle
+
+&#9680;  // circle left half white black fill
+&#9681;  // circle right half white black fill
+&#9682;  // circle lower half white black fill
+&#9683;  // circle upper half white black fill
+&#9684;  // circle upper right quadrant white black fill
+&#9685;  // circle upper left quadrant white black fill
+
+&#9696;  // white upper half circle
+&#9697;  // white lower half circle
+
+&oplus;  // circled plus
+&#8854;  // circled minus
+&otimes; // circled times
+&#8856;  // circled division slash
+&#8857;  // circled dot
+&#8858;  // circled ring
+&#8859;  // circled asterisk
+&#8860;  // circled equals
+&#8861;  // circled dash
+&#10006; // black times x
+
+&#8862;  // squared plus
+&#8863;  // squared minus
+&#8864;  // squared times
+&#8865;  // squared dot
+
+&#9703;  // square half black white
+&#9704;  // square half white black
+
+&#8634;  // anticlockwise open circle arrow
+&#8635;  // clockwise open circle arrow
+&#10226; // anticlockwise gapped circle arrow
+&#10227; // clockwise gapped circle arrow
+&#10560; // anticlockwise closed circle arrow
+&#10561; // clockwise closed circle arrow
+&#10173; // black right arrow
+
+&#10026; // circled white star
+&#10050; // circled white eight star
+&#9734;  // white star
+&#9733;  // black star
+&#9770;  // star crescent
+&#1758;  // arabic star
+&#10017; // star of david
+
+&#9650;  // black upper triangle
+&#9651;  // white upper triangle
+&#9654;  // black right triangle
+&#9655;  // white right triangle
+&#9660;  // black lower triangle
+&#9661;  // white lower triangle
+&#9664;  // black left triangle
+&#9665;  // white left triangle
+&#9698;  // black lower right triangle
+&#9699;  // black lower left triangle
+&#9700;  // black upper left triangle
+&#9701;  // black upper right triangle
+&#9709;  // upper triangle half black white
+&#9710;  // upper triangle half white black
+
+&#10048; // white flower
+&#10047; // black flower
+
+&#9833;  // quarter note music
+&#9834;  // eighth note music
+&#9835;  // beamed eighth notes music
+&#9836;  // beamed sixteenth notes music
+
+&hearts; // black heart suit
+&#10084; // black large heart
+&#10085; // black rotated large heart
+
+&spades; // black spade suit
+&#9828;  // white spade suit
+&diams;  // black diamond suit
+&#9826;  // white diamond suit
+&clubs;  // black club suit
+&#9831;  // white club suit
+
+&#9786;  // white smiling face
+&#9787;  // black smiling face
+&#9785;  // white frowning face
+
+&#9816;  // white chess knight horse
+&#9822;  // black chess knight horse
+&#9812;  // white chess king crown
+&#9818;  // black chess king crown
+&#9813;  // white chess queen crown
+&#9819;  // black chess queen crown
+
+&#8251;  // large x four small circles
+&#9992;  // airplane
+&#9993;  // envelope
+&#9986;  // scissors
+&#9774;  // peace
+
+&#10012; // cross black white half checkerboard
+
+&#8258;  // three asterisks
+&#8273;  // two asterisks
+&#10020; // black four circle asterisk
+&#10021; // black four diamond asterisk
+&#10033; // black asterisk
+&#10043; // black four teardrop asterisk
