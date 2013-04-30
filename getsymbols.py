@@ -71,7 +71,7 @@ def getSymbolAndDescrList(filename):
                     found = i
                     break
                 else: continue
-                
+
             if (found == -1): descrs.append([d, [symbol]])
 
     return symbols, descrs
@@ -90,7 +90,7 @@ def getSymbols(filename, wanted, unwanted):
     symbolFile = f.read()
     symbolFile = symbolFile.split("\n")
     f.close()
-    
+
     desired = []
     for i in xrange(len(symbolFile)):
         if (symbolFile[i] == ""): continue
@@ -105,10 +105,10 @@ def getSymbols(filename, wanted, unwanted):
             else:
                 for no in unwanted:     # symbol has unwanted descr
                     if (no in symbol[1]): giveBack = False
-                    
+
         symbol = symbol[0].strip()
         if (giveBack and (symbol != "")): desired.append(unescape(symbol))
-    
+
     return desired
 
 ##
@@ -119,12 +119,12 @@ def getBoxDrawings():
     first = 9472  # box drawings light horizontal
     last = 9599   # box drawings heavy up and light down
     symbols = []
-    
+
     for i in xrange(last - first):
         symbol = "&#" + str(first + i) + ";"
         print unescape(symbol),
         symbols.append(unescape(symbol))
-    
+
     return symbols
 
 ##
@@ -133,8 +133,8 @@ def getBoxDrawings():
 # @return Dictionary of alphabet -> fullwidth alphabet.
 def getFullwidthAlphabet():
     alphabet = '!"#$%&'
-    alphabet += "'()*+,-./0123456789:;<=>?@"    
-    alphabet =  "ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_"
+    alphabet += "'()*+,-./0123456789:;<=>?@"
+    alphabet += "ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_"
     alphabet += "abcdefghijklmnopqrstuvwxyz{|}~"
 
     alphabetDict = {}
@@ -169,4 +169,3 @@ def getCircledAlphabet():
         alphabetDict[alphabet[i]] = unescape(symbol)
 
     return alphabetDict
-

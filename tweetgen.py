@@ -16,9 +16,13 @@ em = u"\u2003"
 def genRandomTweet(symbols):
     numSymbols = len(symbols)
     if (numSymbols == 0): return ""
-    
-    charPerLine = 18
-    numLines = 6
+
+    # As of March 13, 2013, Twitter has newlines!
+    # This makes twitterart a lot easier, since we don't have to insert spaces
+    # to force a break, and standardizes formatting across web and mobile.
+
+    charPerLine = 15
+    numLines = 8
     tweet = ""
 
     # Randomize the hashtag
@@ -31,8 +35,8 @@ def genRandomTweet(symbols):
     if (numSymbols == 1):
         for i in xrange(numLines):
             tweet += symbols[0]*charPerLine
-            tweet += em
-        tweet += hashtag
+            tweet += '\n'
+        tweet = tweet[:-1] + " " + hashtag
         print tweet
         return tweet
 
@@ -69,7 +73,7 @@ def genRandomTweet(symbols):
         print "diffCharPerLine = " + str(diffCharPerLine)
         shiftLine.append(random.randint(0,diffCharPerLine-1))
         chars.append(random.sample(symbols, diffCharPerLine))
-    
+
     print "shiftLine = ",
     print shiftLine
     print "chars = ",
@@ -95,8 +99,8 @@ def genRandomTweet(symbols):
         for j in xrange(charPerLine):
             c = j % len(line)
             tweet += line[(start + c) % len(line)]
-        tweet += em
-    tweet += hashtag
+        tweet += '\n'
+    tweet = tweet[:-1] + " " + hashtag
 
     print tweet
     return tweet
@@ -104,9 +108,9 @@ def genRandomTweet(symbols):
 ##
 # Generate a text tweet with symbols.
 #
-# @param message Text to turn circular.
+# @param message Text to turn circular or full-width.
 # @param replyHandle (optional) Twitter handle to reply to.
-# @return Their tweet, circular-ified.
+# @return Their tweet, circular-ified or full-widthified.
 def genTextTweet(message, replyHandle=""):
     handle = "@tartbot"
 
@@ -121,12 +125,22 @@ def genTextTweet(message, replyHandle=""):
         coin = random.randint(0, 1)
         if (coin == 0): alphabet = get.getCircledAlphabet()
         else: alphabet = get.getFullwidthAlphabet()
-    
-    # Converts a message
+
+    # Converts a message with the exception of Twitter handles
     def convertTweet(message):
         conversion = ""
+        convert = True
         for i in xrange(len(message)):
-            char = alphabet.get(message[i], message[i])
+            if (convert):
+                if (message[i] == "@"):
+                    convert = False
+                    char = message[i]
+                else:
+                    char = alphabet.get(message[i], message[i])
+            else:
+                if (message[i] == " "):
+                    convert = True
+                char = message[i]
             conversion += char
         return conversion
 
@@ -136,16 +150,16 @@ def genTextTweet(message, replyHandle=""):
     if (not replyHandle == ""):
         replyHandle = "@" + replyHandle + " "
         numMentions = string.count(message, handle)
-        
+
         if (numMentions < 1):
             tweet = convertTweet(message)
-            
+
         elif (numMentions == 1):
             index = string.find(message, handle)
             first = convertTweet(message[:index])
             last = convertTweet(message[index + len(handle):])
             tweet = first + replyHandle + last
-            
+
         else:
             for i in xrange(numMentions):
                 index = string.find(message, handle)
@@ -156,7 +170,7 @@ def genTextTweet(message, replyHandle=""):
         tweet = convertTweet(message)
 
     if (len(tweet) > 140): tweet = tweet[:140]
-    
+
     print tweet
     return tweet
 
@@ -167,7 +181,7 @@ def genTextTweet(message, replyHandle=""):
 # @return
 def genPhotoTweet(photo, replyHandle):
     gradient = []
-    
+
     replyHandle = em + "@" + replyHandle
     numRows = 7
     numCols = 11
@@ -188,7 +202,7 @@ def genPhotoTweet(photo, replyHandle):
     elif (1.89 < ratio and ratio <= 2.94): numShadedCols = 3
     else: numShadedCols = 4  # ratio > 2.94
 
-    # Analyze photo    
+    # Analyze photo
 
     tweet = ""
     tweet += replyHandle

@@ -191,12 +191,12 @@ while(1):
     print "Replied to " + str(numReplies) + " mentions."
 
     # Tweet something
-#    if (tw == tweetTime):
-#        print "\nGenerating art..."
-#        tweetArt()
-#        tw = 0
-#    else:
-#        tw += 1
+    if (tw == tweetTime):
+        print "\nGenerating art..."
+        tweetArt()
+        tw = 0
+    else:
+        tw += 1
 
     # Retweet something
     if (rt == retweetTime):
