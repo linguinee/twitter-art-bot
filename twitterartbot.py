@@ -3,9 +3,16 @@ Twitter bot that generates twitter/symbol art.
 By Ling-Yi Kung (https://github.com/linguinee).
 
 Uses Twython (https://github.com/ryanmcgrath/twython).
+
+----------
+
+Gets authentication info using getauthentication.py.
+
+Saves the ID of the last tweet that was replied to in lastReply.txt. The file
+is created if it doesn't exist. There should be no newlines in the file.
 '''
 
-from twython import Twython
+from twython import Twython, TwythonError
 import getsymbols as get
 import tweetgen as tweet
 import getauthentication as authenticate
@@ -21,14 +28,21 @@ def checkMentions():
     replied = 0
 
     # Get ID of last replied tweet
-    f = open("lastReply.txt")
-    lastId = f.read()
-    f.close()
-    mentions = api.getUserMentions(since_id=lastId, include_entities=True)
+    try:
+        f = open("lastReply.txt")
+        lastId = f.read()
+        f.close()
+    except IOError:
+        f = open("lastReply.txt", 'w')
+        lastId = '0'
+        f.write('0')
+        f.close()
+
+    mentions = api.getMentionsTimeline(since_id=lastId, include_entities=True)
     if (len(mentions) == 0): return 0
-    
-    i = 0
-    for mention in mentions:
+
+    # Go through mentions in time order (older ones first)
+    for mention in reversed(mentions):
         userName = mention['user']['screen_name']
         text = mention['text']
         tweetId = str(mention['id'])
@@ -36,7 +50,7 @@ def checkMentions():
         print "userName = " + userName
         print "text = " + text
 
-        # Check for commented RT
+        # Check for commented RT and ignore
         if (("via" in text) or ("RT" in text)):
             continue
 
@@ -53,15 +67,14 @@ def checkMentions():
         api.updateStatus(status=t, in_reply_to_status_id=tweetId)
         replied += 1
 
-        # First ID is the most current one
-        if (i == 0): lastId = tweetId
-        i += 1
+    # First ID is the most current one
+    lastId = str(mentions[0]['id'])
 
     # Save last replied tweet ID
-    f = open("lastReply.txt", "w")
+    f = open("lastReply.txt", 'w')
     f.write(lastId)
     f.close()
-    
+
     return replied
 
 ##
@@ -70,7 +83,7 @@ def checkMentions():
 # 18 characters + em space (&emsp;) per line.
 def tweetArt():
     r = random.randint(0, 9)
-    
+
     if (r < 7):
         # Picking symbols based on descriptors
         picked = descrs[random.randint(0,len(descrs)-1)][1]
@@ -92,27 +105,37 @@ def tweetArt():
 def retweetPopularArt():
     retweeted = 0
 
-    # Make sure nothing gets retweeted twice
-    lastId = api.retweetedByMe(count=1)
+    # Make sure to get the latest results
+    lastId = api.retweetedOfMe(count=1)
     if (len(lastId) == 0): lastId = 0
-    else: lastId = lastId[0]['id']
+    else: lastId = str(lastId[0]['id'])
 
-    # If the tweet has +100 RTs, retweet
+    # If the tweet has +100 RTs and favs, retweet
     def RT(t):
         tweetId = str(t['id'])
-        count = api.showStatus(id=tweetId)['retweet_count']
-        if (count < 100): return False
+        t = api.showStatus(id=tweetId)
+        count = t['retweet_count'] + t['favorite_count']
+        if (count < 100 or t['retweeted']):
+            return False
         else:
             print t['text']
-            api.reTweet(id=tweetId)
+            print t['user']['screen_name']
+            print "COUNT = " + str(count)
+            print tweetId
+            api.retweet(id=tweetId)
             return True
-    
-    twitterArt = api.search(q="#twitterart", since_id=lastId)['results']
+
+    # Search for popular #twitterart
+    print "Searching for #twitterart..."
+    twitterArt = api.search(q="#twitterart", since_id=lastId)['statuses']
     if (len(twitterArt) > 0):
         for t in twitterArt:
             if (RT(t)): retweeted += 1
+    print "Retweeted " + str(retweeted) + "."
 
-    art = api.search(q="#140art", since_id=lastId)['results']
+    # Search for popular #140art
+    print "Searching for #140art..."
+    art = api.search(q="#140art", since_id=lastId)['statuses']
     if (len(art) > 0):
         for t in art:
             if (RT(t)): retweeted += 1
@@ -161,19 +184,19 @@ tw = tweetTime
 rt = retweetTime
 
 while(1):
-    
+
     # Check mentions
     print "\nChecking mentions..."
     numReplies = checkMentions()
     print "Replied to " + str(numReplies) + " mentions."
 
     # Tweet something
-    if (tw == tweetTime):
-        print "\nGenerating art..."
-        tweetArt()
-        tw = 0
-    else:
-        tw += 1
+#    if (tw == tweetTime):
+#        print "\nGenerating art..."
+#        tweetArt()
+#        tw = 0
+#    else:
+#        tw += 1
 
     # Retweet something
     if (rt == retweetTime):

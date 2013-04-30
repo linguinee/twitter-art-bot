@@ -1,7 +1,14 @@
 '''
 Gets authentication info.
-
 Expects an authentication.txt file in the same directory.
+
+Should be formatted:
+  CONSUMER_KEY = xx...x
+  CONSUMER_SECRET = xx...x
+  ACCESS_TOKEN = xx...x
+  ACCESS_TOKEN_SECRET = xx...x
+
+Keep your authentication info secret!!
 '''
 
 import sys
