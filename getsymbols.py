@@ -1,12 +1,14 @@
 '''
 Gets the necessary symbols.
 
-Uses the symbols.txt file to get special unicode characters.
+Uses the symbols.txt file to get special unicode characters. Each character
+should be on its own line, represented in the &#xxxx; format. The file can be
+annotated using comments preceded by '//'.
 '''
 
 import sys
-import re, htmlentitydefs
 import string
+import re, htmlentitydefs
 
 ##
 # Removes HTML or XML character references and entities from a text string.
@@ -39,7 +41,7 @@ def unescape(text):
 # @param filename The symbols.txt file path.
 # @return symbols List of Unicode symbols.
 # @return descrs List of [descriptors, [symbols,...]].
-def getSymbolAndDescrList(filename):
+def symbolAndDescrList(filename):
     f = open(filename)
     symbolFile = f.read()
     symbolFile = symbolFile.split("\n")
@@ -112,26 +114,10 @@ def getSymbols(filename, wanted, unwanted):
     return desired
 
 ##
-# Get box drawing symbols.
-#
-# @return List of Unicode box drawing symbols.
-def getBoxDrawings():
-    first = 9472  # box drawings light horizontal
-    last = 9599   # box drawings heavy up and light down
-    symbols = []
-
-    for i in xrange(last - first):
-        symbol = "&#" + str(first + i) + ";"
-        print unescape(symbol),
-        symbols.append(unescape(symbol))
-
-    return symbols
-
-##
 # Creates a dictionary of fullwidth alphabet characters.
 #
 # @return Dictionary of alphabet -> fullwidth alphabet.
-def getFullwidthAlphabet():
+def fullwidthAlphabet():
     alphabet = '!"#$%&'
     alphabet += "'()*+,-./0123456789:;<=>?@"
     alphabet += "ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_"
@@ -147,7 +133,7 @@ def getFullwidthAlphabet():
 # Creates a dictionary of circled alphabet characters.
 #
 # @return Dictionary of alphabet -> circled alphabet.
-def getCircledAlphabet():
+def circledAlphabet():
     alphabet =  "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     alphabet += "abcdefghijklmnopqrstuvwxyz"
     alphabet += "0"
@@ -169,3 +155,24 @@ def getCircledAlphabet():
         alphabetDict[alphabet[i]] = unescape(symbol)
 
     return alphabetDict
+
+##
+# Get gradient symbols.
+#
+# @return List of gradient lists.
+def gradients():
+    fullwidth = [u"\u3000", u"\uFF0E", u"\uFF0C", u"\uFF0A", u"\uFF1A",
+                 u"\uFF1B", u"\uFF0B", u"\uFF1D", u"\uFF4F", u"\uFF41",
+                 u"\uFF18", u"\uFF06", u"\uFF03", u"\uFF20"]
+    cjk1 = [u"\u3000", u"\u4E36", u"\u51AB", u"\u2EA6", u"\u4EBB", u"\u5165",
+            u"\u516C", u"\u519C", u"\u517F", u"\u5164", u"\u4B1F", u"\u4A3A"]
+    cjk2 = [u"\u3000", u"\u4E37", u"\u5196", u"\u5182", u"\u518B", u"\u5183",
+            u"\u5184", u"\u518A", u"\u2EB4", u"\u5193", u"\u418F", u"\u4C13"]
+    cjk3 = [u"\u3000", u"\u2E80", u"\u52F9", u"\u52FA", u"\u52FB", u"\u52FF",
+            u"\u5306", u"\u530A", u"\u530D", u"\u5314", u"\u41AF", u"\u4868"]
+    cjk4 = [u"\u3000", u"\u4E37", u"\u4EBA", u"\u53EA", u"\u56DA", u"\u56E0",
+            u"\u56EA", u"\u56EB", u"\u5703", u"\u571E", u"\u4279", u"\u9F98"]
+    rect = [u"\u3000", u"\u2591", u"\u2592", u"\u2593"]
+
+    gradients = [fullwidth, cjk1, cjk2, cjk3, cjk4, rect]
+    return gradients

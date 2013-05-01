@@ -3,8 +3,12 @@ Generates tweets.
 '''
 
 import getsymbols as get
+
 import random
 import string
+import Image
+import urllib
+import cStringIO
 
 em = u"\u2003"
 
@@ -116,15 +120,15 @@ def genTextTweet(message, replyHandle=""):
 
     # Determine type of symbols
     if ("-c" in message):
-        alphabet = get.getCircledAlphabet()
+        alphabet = get.circledAlphabet()
         message = string.replace(message, "-c", "").strip()
     elif ("-w" in message):
-        alphabet = get.getFullwidthAlphabet()
+        alphabet = get.fullwidthAlphabet()
         message = string.replace(message, "-w", "").strip()
     else:
         coin = random.randint(0, 1)
-        if (coin == 0): alphabet = get.getCircledAlphabet()
-        else: alphabet = get.getFullwidthAlphabet()
+        if (coin == 0): alphabet = get.circledAlphabet()
+        else: alphabet = get.fullwidthAlphabet()
 
     # Converts a message with the exception of Twitter handles
     def convertTweet(message):
@@ -180,7 +184,10 @@ def genTextTweet(message, replyHandle=""):
 # @param
 # @return
 def genPhotoTweet(photo, replyHandle):
-    gradient = []
+    gradients = get.gradients()
+    #f = cStringIO.StringIO(urllib.urlopen(photo).read())
+    #img = Image.open(f)
+    #f.close()
 
     replyHandle = em + "@" + replyHandle
     numRows = 7

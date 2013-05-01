@@ -11,3 +11,4 @@ It also retweets #twitterart and #140art tweets with +100 retweets and favorites
 ----------
 
 Uses Twython (https://github.com/ryanmcgrath/twython).
+Uses PIL (http://www.pythonware.com/products/pil/).

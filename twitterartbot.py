@@ -3,6 +3,7 @@ Twitter bot that generates twitter/symbol art.
 By Ling-Yi Kung (https://github.com/linguinee).
 
 Uses Twython (https://github.com/ryanmcgrath/twython).
+Uses PIL (http://www.pythonware.com/products/pil/).
 
 ----------
 
@@ -13,12 +14,14 @@ is created if it doesn't exist. There should be no newlines in the file.
 '''
 
 from twython import Twython, TwythonError
+
 import getsymbols as get
 import tweetgen as tweet
 import getauthentication as authenticate
-import random
+
 import sys
 import time
+import random
 
 ##
 # Get pending mentions.
@@ -35,7 +38,7 @@ def checkMentions():
     except IOError:
         f = open("lastReply.txt", 'w')
         lastId = '0'
-        f.write('0')
+        f.write(lastId)
         f.close()
 
     mentions = api.getMentionsTimeline(since_id=lastId, include_entities=True)
@@ -57,6 +60,7 @@ def checkMentions():
         # Check for photo media
         try:
             photo = mention['entities']['media'][0]['media_url']
+            print "omg a photo"
             continue
             #t = tweet.genPhotoTweet(photo, userName)
         except KeyError:
@@ -167,7 +171,7 @@ api = Twython(app_key=consumer_key,
 
 # Get symbols for use
 print "Loading symbols..."
-symbols, descrs = get.getSymbolAndDescrList("symbols.txt")
+symbols, descrs = get.SymbolAndDescrList("symbols.txt")
 
 ##
 # Main loop that runs.
@@ -175,7 +179,7 @@ symbols, descrs = get.getSymbolAndDescrList("symbols.txt")
 # Checks mentions every two minutes.
 # Tweets something random every sixteen minutes.
 # Looks for something to retweet every hour.
-print "Bot initialized.\n"
+print "Bot initialized."
 replyInterval = 120
 
 tweetTime = 8
